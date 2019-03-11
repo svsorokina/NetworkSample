@@ -1,4 +1,4 @@
-package ru.surf.networksample.network
+package ru.surf.networksample.interactor.network
 
 
 interface ResponseCallback<R : ApiResponse> {

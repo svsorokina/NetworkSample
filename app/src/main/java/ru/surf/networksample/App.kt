@@ -3,7 +3,7 @@ package ru.surf.networksample
 import android.app.Application
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import ru.surf.networksample.network.BASE_URL
+import ru.surf.networksample.interactor.network.BASE_URL
 
 
 class App : Application() {

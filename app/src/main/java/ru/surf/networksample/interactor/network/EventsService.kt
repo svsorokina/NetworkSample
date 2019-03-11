@@ -1,4 +1,4 @@
-package ru.surf.networksample.network
+package ru.surf.networksample.interactor.network
 
 import retrofit2.Call
 import retrofit2.http.GET

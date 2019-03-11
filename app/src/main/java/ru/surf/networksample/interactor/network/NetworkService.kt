@@ -1,4 +1,4 @@
-package ru.surf.networksample.network
+package ru.surf.networksample.interactor.network
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
