@@ -3,22 +3,18 @@ package ru.surf.networksample.interactor
 import androidx.lifecycle.MutableLiveData
 import ru.surf.networksample.base.ScreenState
 import ru.surf.networksample.exceptions.ApiException
-import ru.surf.networksample.interactor.network.NetworkService
+import ru.surf.networksample.interactor.network.EventsApi
 import ru.surf.networksample.runOnNetworkIO
 import ru.surf.networksample.runOnUi
 import ru.surf.networksample.ui.EventsState
 import java.io.IOException
+import javax.inject.Inject
+import javax.inject.Singleton
 
-
-class EventsRepository {
-
-    private object Holder {
-        val INSTANCE = EventsRepository()
-    }
-
-    companion object {
-        val instance: EventsRepository by lazy { Holder.INSTANCE }
-    }
+@Singleton
+class EventsRepository @Inject constructor(
+    private val eventsApi: EventsApi
+) {
 
     fun getEvents(): MutableLiveData<ScreenState<EventsState>> {
 
@@ -28,7 +24,7 @@ class EventsRepository {
         runOnNetworkIO {
 
             try {
-                val eventsResponse = NetworkService.instance.service.getEvents().execute()
+                val eventsResponse = eventsApi.getEvents().execute()
 
                 runOnUi {
 

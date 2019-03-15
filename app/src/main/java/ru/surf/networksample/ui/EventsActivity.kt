@@ -11,10 +11,17 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
+import ru.surf.networksample.App
 import ru.surf.networksample.R
+import ru.surf.networksample.base.DaggerViewModelsFactory
 import ru.surf.networksample.base.ScreenState
+import ru.surf.networksample.ui.di.DaggerEventsScreenComponent
+import javax.inject.Inject
 
 class EventsActivity : AppCompatActivity(), LifecycleOwner {
+
+    @Inject
+    lateinit var viewModeFactory: DaggerViewModelsFactory
 
     private lateinit var viewModel: EventsViewModel
     private lateinit var adapter: EvensAdapter
@@ -22,18 +29,22 @@ class EventsActivity : AppCompatActivity(), LifecycleOwner {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        initComponent()
         initAdapter()
 
-        viewModel = ViewModelProviders.of(
-            this,
-            EventsViewModelFactory()
-        )[EventsViewModel::class.java]
+        viewModel = ViewModelProviders.of(this, viewModeFactory).get(EventsViewModel::class.java)
 
         viewModel.eventsState.observe(
             this,
             Observer { updateUI(it) }
         )
+    }
+
+    private fun initComponent() {
+        DaggerEventsScreenComponent.builder()
+            .appComponent((application as App).component)
+            .build()
+            .inject(this)
     }
 
     private fun updateUI(screenState: ScreenState<EventsState>) {

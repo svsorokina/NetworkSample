@@ -1,28 +1,22 @@
 package ru.surf.networksample
 
 import android.app.Application
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import ru.surf.networksample.interactor.network.BASE_URL
+import ru.surf.networksample.di.AppComponent
+import ru.surf.networksample.di.AppModule
+import ru.surf.networksample.di.DaggerAppComponent
 
 
 class App : Application() {
 
-    private lateinit var retrofit: Retrofit
-
-    override fun onCreate() {
-        super.onCreate()
-
-        retrofit = Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
+    val component: AppComponent by lazy {
+        DaggerAppComponent
+            .builder()
+            .appModule(AppModule(this))
             .build()
     }
 
-    fun getEventsService(): Retrofit {
-        if (retrofit == null) {
-
-        }
-        return retrofit
+    override fun onCreate() {
+        super.onCreate()
+        component.inject(this)
     }
 }
